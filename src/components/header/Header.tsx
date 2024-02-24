@@ -11,6 +11,7 @@ export const Header = () => {
             <Layout>
                 <FlexBox>
                     <IconComponent iconSrc={icon} />
+                    <div>Тут типо шапка</div>
                 </FlexBox>
             </Layout>
         </StyledHeader>
