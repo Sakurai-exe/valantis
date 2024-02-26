@@ -3,6 +3,7 @@ import { Header } from './components/header/Header'
 import { useAppDispatch } from './store/hooks'
 import { fetchProductIdsAction } from './saga/actions'
 import Goods from './goods/Goods'
+import { Layout } from './components/Layout/Layout'
 
 export const App = () => {
     const dispatch = useAppDispatch()
@@ -13,7 +14,9 @@ export const App = () => {
     return (
         <div>
             <Header />
-            <Goods />
+            <Layout>
+                <Goods />
+            </Layout>
         </div>
     )
 }

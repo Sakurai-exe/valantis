@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects'
-import { watchFetchProduct } from './saga'
+import { watchFetchProduct, watchOffsetChange } from './saga'
 
 export default function* rootSaga() {
-	yield all([watchFetchProduct()])
+	yield all([watchFetchProduct(), watchOffsetChange()])
 }

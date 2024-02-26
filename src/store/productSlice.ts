@@ -1,11 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from './index'
 
-interface ProductState {
+export interface ProductState {
 	products: Product[]
 	offset: number
 	loading: boolean
-	error: string | null
+	pageNumber?: number
 }
 
 export interface Product {
@@ -19,7 +18,7 @@ const initialState: ProductState = {
 	products: [],
 	offset: 0,
 	loading: false,
-	error: null,
+	pageNumber: 1,
 }
 
 const productSlice = createSlice({
@@ -33,14 +32,21 @@ const productSlice = createSlice({
 			state.loading = false
 			state.products = action.payload
 		},
-		fetchProductsFailure(state, action: PayloadAction<string>) {
-			state.loading = false
-			state.error = action.payload
+		fetchProductsFailure(state) {
+			state.loading = true
 		},
+		goToNextPage(state) {
+			state.offset += 50
+			state.pageNumber = (state.offset / 50) + 1
+		},
+		goToPrevPage(state) {
+			state.offset -= 50
+				state.pageNumber = (state.offset / 50) + 1
+		}
 	},
 })
 
-export const { fetchProductIds, fetchProductsSuccess, fetchProductsFailure } =
+export const { fetchProductIds, fetchProductsSuccess, fetchProductsFailure, goToNextPage, goToPrevPage } =
 	productSlice.actions
 
 export default productSlice.reducer
