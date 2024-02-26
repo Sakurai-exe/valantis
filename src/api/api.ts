@@ -10,11 +10,13 @@ const generateXAuth = () => {
 export enum Api {
 	GetIds = 'get_ids',
 	GetItems = 'get_items',
+	GetFields = 'get_fields',
+	Filter = 'filter',
 }
 
 export async function fetchData(
 	action: string,
-	params:{}
+	params?:{}
 ): Promise<number[]> {
 	const response = await fetch('http://api.valantis.store:40000/', {
 		method: 'POST',

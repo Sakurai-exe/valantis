@@ -4,7 +4,9 @@ export interface ProductState {
 	products: Product[]
 	offset: number
 	loading: boolean
-	pageNumber?: number
+	pageNumber: number
+	filter: Filter
+	defaultBrands: string[]
 }
 
 export interface Product {
@@ -14,15 +16,23 @@ export interface Product {
 	product: string
 }
 
+export interface Filter {
+	price?: number
+	productName?: string
+	brand?: string
+}
+
 const initialState: ProductState = {
 	products: [],
 	offset: 0,
 	loading: false,
 	pageNumber: 1,
+	filter: {},
+	defaultBrands: [],
 }
 
 const productSlice = createSlice({
-	name: 'items',
+	name: 'product',
 	initialState,
 	reducers: {
 		fetchProductIds(state) {
@@ -37,16 +47,25 @@ const productSlice = createSlice({
 		},
 		goToNextPage(state) {
 			state.offset += 50
-			state.pageNumber = (state.offset / 50) + 1
+			state.pageNumber = state.offset / 50 + 1
 		},
 		goToPrevPage(state) {
 			state.offset -= 50
-				state.pageNumber = (state.offset / 50) + 1
-		}
+			state.pageNumber = state.offset / 50 + 1
+		},
+		setDefaultBrands(state, action: PayloadAction<string[]>) {
+			state.defaultBrands = action.payload
+		},
 	},
 })
 
-export const { fetchProductIds, fetchProductsSuccess, fetchProductsFailure, goToNextPage, goToPrevPage } =
-	productSlice.actions
+export const {
+	fetchProductIds,
+	fetchProductsSuccess,
+	fetchProductsFailure,
+	goToNextPage,
+	goToPrevPage,
+	setDefaultBrands,
+} = productSlice.actions
 
 export default productSlice.reducer

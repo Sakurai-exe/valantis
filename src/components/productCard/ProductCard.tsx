@@ -20,7 +20,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product
                     <Text>{product.id}</Text>
                     <Text>{product.product}</Text>
                     <Text>{product.brand}</Text>
-                    <Text color='#A52838'>{product.price} ₽</Text>
+                    <Text color='#A52838' fontWeight='bold'>{product.price} ₽</Text>
                 </div>
             </FlexBox>
         </StyledProductCard>

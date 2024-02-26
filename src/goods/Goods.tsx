@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { StyledGoods, StyledNavigateButtonsWrapper } from './Goods.styled'
 import { ProductState } from '../store/productSlice'
-import { selectLoading, selectProducts, selectOffset, selectPageNumber } from '../store/selectors'
+import { selectLoading, selectProducts, selectOffset, selectPageNumber, selectDefaultBrands } from '../store/selectors'
 import { RootState } from '../store/index'
 import { ProductCard } from '../components/productCard/ProductCard'
 import { FlexBox } from '../components/ui/flexBox/FlexBox'
@@ -14,6 +14,7 @@ import GoToRight from '../assets/icons/goToRight.svg'
 import { goToNextPage, goToPrevPage } from '../store/productSlice'
 import { useAppDispatch } from '../store/hooks'
 import { Text } from '../components/ui/text/Text'
+import { Filter } from './filter/Filter'
 
 interface GoodsProps extends ProductState { }
 enum ClickType {
@@ -21,8 +22,7 @@ enum ClickType {
     Next = 'next'
 }
 
-
-const Goods: React.FC<GoodsProps> = ({ products, loading, offset, pageNumber }) => {
+const Goods: React.FC<GoodsProps> = ({ products, loading, offset, pageNumber, defaultBrands }) => {
     const dispatch = useAppDispatch()
     const nextPageHandleClick = (clickType: string) => {
         if (clickType === ClickType.Prev) {
@@ -33,12 +33,14 @@ const Goods: React.FC<GoodsProps> = ({ products, loading, offset, pageNumber }) 
 
     }
     const dataWithoutDuplicates = removeDuplicatesById(products)
+
     return (
         <StyledGoods>
             {loading ? (
                 <Loader />
             ) : (
                 <div>
+                    <Filter defaultBrands={defaultBrands} />
                     <FlexBox justifycontent='flex-start' flexwrap='wrap' gap='25px'>
                         {dataWithoutDuplicates.map((product) => (
                             <ProductCard key={product.id} product={product} />
@@ -72,6 +74,7 @@ const mapStateToProps = (state: RootState) => ({
     loading: selectLoading(state),
     offset: selectOffset(state),
     pageNumber: selectPageNumber(state),
+    defaultBrands: selectDefaultBrands(state),
 })
 
 export default connect(mapStateToProps)(Goods)
