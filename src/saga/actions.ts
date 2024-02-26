@@ -1,4 +1,4 @@
-import { Product } from 'store'
+import { Product } from 'store/productSlice'
 
 export enum ProductActionTypes {
 	FETCH_PRODUCT_IDS = 'FETCH_PRODUCT_IDS',
@@ -25,6 +25,6 @@ export type ProductAction =
 	| FetchProductsSuccessAction
 	| FetchProductsFailureAction
 
-export const fetchProductIds = () => ({
-	type: 'FETCH_PRODUCT_IDS',
-})
+export const fetchProductIdsAction = () => {
+	return { type: 'FETCH_DATA' }
+}

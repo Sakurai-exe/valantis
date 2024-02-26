@@ -1,23 +1,24 @@
 // sagas.js
 import { put, call, takeEvery, select } from 'redux-saga/effects';
 import { Api, fetchData } from '../api/api'; // Замените на вашу функцию fetch
-import { Product, RootState } from 'store';
+import { RootState } from 'store';
+import { Product, fetchProductIds, fetchProductsFailure, fetchProductsSuccess } from '../store/productSlice';
 
-// Определяем типы для данных
 type ProductId = number;
 
-function* fetchProductIdsSaga() {
+function* fetchProductSaga() {
     const state: RootState = yield select();
-    const offset = state.products.offset;
+    const offset = state.items.offset;
+    yield put(fetchProductIds())
   try {
-    const productIds: ProductId[] = yield call(fetchData, Api.GetIds, {"offset": offset, "limit": 50});
+    const productIds: ProductId[] = yield call(fetchData, Api.GetIds, {"offset": offset, "limit": 50})
     const products: Product[] = yield call(fetchData, Api.GetItems, {"ids": productIds});
-    yield put({ type: 'FETCH_PRODUCTS_SUCCESS', payload: products });
+    yield put(fetchProductsSuccess(products))
   } catch (error) {
-    yield put({ type: 'FETCH_PRODUCTS_FAILURE', error });
+    yield put(fetchProductsFailure(error as string))
   }
 }
 
-export function* watchFetchProductIds() {
-  yield takeEvery('FETCH_PRODUCT_IDS', fetchProductIdsSaga);
+export function* watchFetchProduct() {
+  yield takeEvery('FETCH_DATA', fetchProductSaga);
 }
